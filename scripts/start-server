@@ -1,0 +1,5 @@
+#!/bin/bash
+
+docker-machine start Warsow
+eval $(docker-machine env Warsow)
+docker start warsow-server || docker run -d --name warsow-server -p 44400:44400/udp -p 44444:44444 s7b4/warsow
