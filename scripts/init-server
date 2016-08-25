@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 docker-machine rm -f Warsow
 docker-machine create --driver digitalocean --digitalocean-access-token $TOKEN --digitalocean-region fra1 Warsow
