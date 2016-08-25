@@ -8,20 +8,16 @@ RUN set -x && apk add --no-cache --virtual curl && \
     curl -L https://github.com/yamamoto-febc/docker-machine-sakuracloud/releases/download/v0.0.13/docker-machine-driver-sakuracloud-Linux-x86_64 >/usr/local/bin/docker-machine-driver-sakuracloud && \
     chmod +x /usr/local/bin/docker-machine-driver-sakuracloud
 
-RUN set -x && apk add --no-cache --virtual curl automake autoconf \
-&& apk add --no-cache --virtual automake \
-&& apk add --no-cache --virtual autoconf \
-&& apk add --no-cache --virtual alpine-sdk \
-&& cd /tmp \
-&& curl -L https://github.com/multiplay/qstat/archive/master.zip >qstat.zip \
-&& set -x && apk add --no-cache --virtual unzip \
-&& unzip qstat.zip \
-&& cd qstat-master \
-&& ./autogen.sh \
-&& ./configure \
-&& make \
-&& make install \
-&& make clean
+RUN set -x \
+  && apk add --no-cache unzip automake autoconf alpine-sdk \
+  && cd /tmp \
+  && curl -L https://sourceforge.net/projects/qstat/files/qstat/qstat-2.11/qstat-2.11.tar.gz/download > qstat.tar.gz \
+  && tar -zxf qstat.tar.gz \
+  && cd qstat-2.11 \
+  && ./configure \
+  && make \
+  && make install \
+  && make clean
 
 ENV NODE_VERSION=v6.4.0 NPM_VERSION=3
 
@@ -62,6 +58,8 @@ RUN apk add --no-cache curl make gcc g++ python linux-headers paxctl libgcc libs
   rm -rf /etc/ssl /node-${NODE_VERSION}.tar.gz /SHASUMS256.txt.asc /node-${NODE_VERSION} ${RM_DIRS} \
     /usr/share/man /tmp/* /var/cache/apk/* /root/.npm /root/.node-gyp /root/.gnupg \
     /usr/lib/node_modules/npm/man /usr/lib/node_modules/npm/doc /usr/lib/node_modules/npm/html
+
+RUN mkdir -p /etc/ssl/certs/ && update-ca-certificates --fresh
 
 ADD scripts /usr/local/bin/wsw-scripts
 
