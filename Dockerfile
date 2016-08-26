@@ -62,5 +62,6 @@ RUN apk add --no-cache curl make gcc g++ python linux-headers paxctl libgcc libs
 RUN mkdir -p /etc/ssl/certs/ && update-ca-certificates --fresh
 
 COPY scripts/* /usr/local/bin/
+COPY wsw /var/wsw
 
-CMD ["/bin/sh"]
+CMD ["node", "/var/wsw/server.js"]
