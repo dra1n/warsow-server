@@ -63,4 +63,6 @@ client.connect(1337, '0.0.0.0', function() {
   console.log('Connected')
   client.write('wsw-stop')
 })
+
+//  Successfully removed Warsow
 ```
