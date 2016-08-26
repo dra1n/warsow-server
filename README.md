@@ -1,6 +1,6 @@
 # Warsow server scripts
 
-To run warsow server on your DigitalOcean account:
+### To run warsow server on your DigitalOcean account:
 
 * Generate an [API Token]( https://cloud.digitalocean.com/settings/api/tokens)
 * Export TOKEN environment variable
@@ -18,7 +18,7 @@ scripts/wsw-stop
 ```
 This will stop your docker machine and destroy droplet
 
-To run this inside container
+### To run this inside container
 ```bash
 docker build -t boom/wsw-scripts .
 docker run -e TOKEN=<digitalocean token> -e PORT=1337 -e HOST='0.0.0.0' -p 1337:1337 -t boom/wsw-scripts
