@@ -2,3 +2,5 @@
 
 docker-machine rm -f Warsow
 docker-machine create --driver digitalocean --digitalocean-access-token $TOKEN --digitalocean-region fra1 Warsow
+eval $(docker-machine env Warsow --shell sh)
+docker run -d --name warsow-server -p 44400:44400/udp -p 44444:44444 s7b4/warsow
