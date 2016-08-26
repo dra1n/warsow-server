@@ -61,6 +61,6 @@ RUN apk add --no-cache curl make gcc g++ python linux-headers paxctl libgcc libs
 
 RUN mkdir -p /etc/ssl/certs/ && update-ca-certificates --fresh
 
-ADD scripts /usr/local/bin/wsw-scripts
+ADD scripts /usr/local/bin
 
 CMD ["/bin/sh"]
