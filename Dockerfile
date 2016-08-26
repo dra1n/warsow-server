@@ -3,21 +3,21 @@ FROM docker:dind
 MAINTAINER dra1n <dra1n86@gmail.com>
 
 RUN set -x && apk add --no-cache --virtual curl && \
-    curl -L https://github.com/docker/machine/releases/download/v0.8.0/docker-machine-Linux-x86_64 >/usr/local/bin/docker-machine && \
-    chmod +x /usr/local/bin/docker-machine && \
-    curl -L https://github.com/yamamoto-febc/docker-machine-sakuracloud/releases/download/v0.0.13/docker-machine-driver-sakuracloud-Linux-x86_64 >/usr/local/bin/docker-machine-driver-sakuracloud && \
-    chmod +x /usr/local/bin/docker-machine-driver-sakuracloud
+  curl -L https://github.com/docker/machine/releases/download/v0.8.0/docker-machine-Linux-x86_64 >/usr/local/bin/docker-machine && \
+  chmod +x /usr/local/bin/docker-machine && \
+  curl -L https://github.com/yamamoto-febc/docker-machine-sakuracloud/releases/download/v0.0.13/docker-machine-driver-sakuracloud-Linux-x86_64 >/usr/local/bin/docker-machine-driver-sakuracloud && \
+  chmod +x /usr/local/bin/docker-machine-driver-sakuracloud
 
-RUN set -x \
-  && apk add --no-cache unzip automake autoconf alpine-sdk \
-  && cd /tmp \
-  && curl -L https://sourceforge.net/projects/qstat/files/qstat/qstat-2.11/qstat-2.11.tar.gz/download > qstat.tar.gz \
-  && tar -zxf qstat.tar.gz \
-  && cd qstat-2.11 \
-  && ./configure \
-  && make \
-  && make install \
-  && make clean
+RUN set -x && \
+  apk add --no-cache unzip automake autoconf alpine-sdk && \
+  cd /tmp && \
+  curl -L https://sourceforge.net/projects/qstat/files/qstat/qstat-2.11/qstat-2.11.tar.gz/download > qstat.tar.gz && \
+  tar -zxf qstat.tar.gz && \
+  cd qstat-2.11 && \
+  ./configure && \
+  make && \
+  make install && \
+  make clean
 
 ENV NODE_VERSION=v6.4.0 NPM_VERSION=3
 
