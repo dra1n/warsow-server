@@ -1,8 +1,10 @@
-var net = require('net')
-var spawn = require('child_process').spawn
+/* eslint no-process-env: "allow" */
 
-var port = process.env.PORT || 1337
-var host = process.env.HOST || '0.0.0.0'
+const net = require('net')
+const spawn = require('child_process').spawn
+
+const port = process.env.PORT || 1337
+const host = process.env.HOST || '0.0.0.0'
 
 var rpc = {
   'wsw-pause': 'wsw-pause',
@@ -22,18 +24,23 @@ var server = net.createServer(function(socket) {
       console.log('cmd: ', cmd)
 
       command.stdout.on('data', function (data) {
-        socket.write(data.toString())
+        socket.write(data.toString(), 'utf8')
         console.log(data.toString())
       })
 
       command.stderr.on('data', function (data) {
-        socket.write(data.toString())
+        socket.write(data.toString(), 'utf8')
         console.error(data.toString())
       })
 
       command.on('exit', function (code) {
-        socket.destroy()
-        console.log('child process exited with code ' + code.toString())
+        var message = 'child process exited with code ' + code.toString()
+        if (code !== 0) {
+          socket.destroy(new Error(message))
+        } else {
+          socket.end()
+        }
+        console.log(message)
       })
     }
   })
