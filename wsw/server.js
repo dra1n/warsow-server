@@ -46,6 +46,10 @@ const server = net.createServer(function (socket) {
       })
     }
   })
+
+  socket.on('error', function (message) {
+    console.error(message)
+  })
 })
 
 server.listen(port, host)
