@@ -8,11 +8,11 @@ const port = process.env.PORT || 1337
 const host = process.env.HOST || '0.0.0.0'
 
 const rpc = {
-  'wsw-pause': 'wsw-pause',
-  'wsw-resume': 'wsw-resume',
-  'wsw-start': 'wsw-start',
-  'wsw-stats': 'wsw-stats',
-  'wsw-stop': 'wsw-stop'
+  'game-pause': 'game-pause',
+  'game-resume': 'game-resume',
+  'game-start': 'game-start',
+  'game-stats': 'game-stats',
+  'game-stop': 'game-stop'
 }
 
 const server = net.createServer(function (socket) {

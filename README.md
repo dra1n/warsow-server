@@ -9,12 +9,12 @@ export TOKEN=<your token>
 ```
 * Initialize docker machine (create droplet) and run warsow server
 ```bash
-scripts/wsw-start
+scripts/game-start
 ```
 
 To stop warsow server simply run
 ```bash
-scripts/wsw-stop
+scripts/game-stop
 ```
 This will stop your docker machine and destroy droplet
 
@@ -33,7 +33,7 @@ var client = new net.Socket()
 
 client.connect(1337, '0.0.0.0', function() {
   console.log('Connected')
-  client.write('wsw-start')
+  client.write('game-start')
 })
 
 client.on('data', function(data) {
@@ -61,7 +61,7 @@ reestablish the connection
 ```
 client.connect(1337, '0.0.0.0', function() {
   console.log('Connected')
-  client.write('wsw-stop')
+  client.write('game-stop')
 })
 
 //  Successfully removed Warsow
