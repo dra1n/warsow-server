@@ -13,11 +13,13 @@ const rpc = {
   stop: 'game-stop'
 }
 
-const isAllowed = (cmd) => (
-  Object.keys(rpc).indexOf(cmd) > -1
-)
+const cmd = process.argv[2]
 
-const cli = () => {
+function isAllowed(cmd) {
+  return Object.keys(rpc).indexOf(cmd) > -1
+}
+
+function cli() {
   const iface = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -56,4 +58,10 @@ const cli = () => {
   iface.prompt()
 }
 
-cli()
+if (isAllowed(cmd)) {
+  let command = spawn(rpc[cmd])
+  command.stdout.pipe(process.stdout);
+  command.stderr.pipe(process.stderr);
+} else {
+  cli()
+}
