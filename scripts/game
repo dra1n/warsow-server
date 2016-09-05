@@ -5,11 +5,6 @@
 const spawn = require('child_process').spawn
 const readline = require('readline')
 
-const iface = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-})
-
 const rpc = {
   pause: 'game-pause',
   resume: 'game-resume',
@@ -18,34 +13,47 @@ const rpc = {
   stop: 'game-stop'
 }
 
-iface.setPrompt('game> ')
+const isAllowed = (cmd) => (
+  Object.keys(rpc).indexOf(cmd) > -1
+)
 
-iface.on('line', (line) => {
-  if (line.trim() === '') {
-    return iface.prompt()
-  }
+const cli = () => {
+  const iface = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
 
-  let cmd = line.toString()
+  iface.setPrompt('game> ')
 
-  if (Object.keys(rpc).indexOf(cmd) > -1) {
-    let command
+  iface.on('line', (line) => {
+    if (line.trim() === '') {
+      return iface.prompt()
+    }
 
-    iface.pause()
+    let cmd = line.toString()
 
-    command = spawn(rpc[cmd])
-    command.stdout.pipe(process.stdout);
-    command.stderr.pipe(process.stderr);
+    if (isAllowed(cmd)) {
+      let command
 
-    command.on('exit', (code) => {
-      let message = 'child process exited with code ' + code.toString()
-      console.log(message)
+      iface.pause()
+
+      command = spawn(rpc[cmd])
+      command.stdout.pipe(process.stdout);
+      command.stderr.pipe(process.stderr);
+
+      command.on('exit', (code) => {
+        let message = 'child process exited with code ' + code.toString()
+        console.log(message)
+        iface.prompt()
+      })
+    } else {
+      console.log('Command not recognized')
+      console.log('Type "help" to list all available commands')
       iface.prompt()
-    })
-  } else {
-    console.log('Command not recognized')
-    console.log('Type "help" to list all available commands')
-    iface.prompt()
-  }
-})
+    }
+  })
 
-iface.prompt()
+  iface.prompt()
+}
+
+cli()
