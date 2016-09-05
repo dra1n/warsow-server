@@ -8,15 +8,15 @@ const port = process.env.PORT || 1337
 const host = process.env.HOST || '0.0.0.0'
 
 const rpc = {
-  'game-pause': 'game-pause',
-  'game-resume': 'game-resume',
-  'game-start': 'game-start',
-  'game-stats': 'game-stats',
-  'game-stop': 'game-stop'
+  pause: 'game-pause',
+  resume: 'game-resume',
+  start: 'game-start',
+  stats: 'game-stats',
+  stop: 'game-stop'
 }
 
-const server = net.createServer(function (socket) {
-  socket.on('data', function (data) {
+const server = net.createServer((socket) => {
+  socket.on('data', (data) => {
     let cmd = data.toString()
     let command
 

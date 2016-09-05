@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+
+/* eslint no-console: 0 */
+
+const spawn = require('child_process').spawn
+const readline = require('readline')
+
+const iface = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
+
+const rpc = {
+  pause: 'game-pause',
+  resume: 'game-resume',
+  start: 'game-start',
+  stats: 'game-stats',
+  stop: 'game-stop'
+}
+
+iface.setPrompt('game> ')
+
+iface.on('line', (line) => {
+  if (line.trim() === '') {
+    return iface.prompt()
+  }
+
+  let cmd = line.toString()
+
+  if (Object.keys(rpc).indexOf(cmd) > -1) {
+    let command
+
+    iface.pause()
+
+    command = spawn(rpc[cmd])
+    command.stdout.pipe(process.stdout);
+    command.stderr.pipe(process.stderr);
+
+    command.on('exit', (code) => {
+      let message = 'child process exited with code ' + code.toString()
+      console.log(message)
+      iface.prompt()
+    })
+  } else {
+    console.log('Command not recognized')
+    console.log('Type "help" to list all available commands')
+    iface.prompt()
+  }
+})
+
+iface.prompt()

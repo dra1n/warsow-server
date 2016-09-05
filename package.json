@@ -1,0 +1,19 @@
+{
+  "name": "wsw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "game": "./scripts/game",
+    "game-pause": "./scripts/game-pause",
+    "game-resume": "./scripts/game-resume",
+    "game-start": "./scripts/game-start",
+    "game-stats": "./scripts/game-stats",
+    "game-stop": "./scripts/game-stop"
+  },
+  "author": "dra1n",
+  "license": "MIT"
+}

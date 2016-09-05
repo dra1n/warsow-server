@@ -61,7 +61,18 @@ RUN apk add --no-cache curl make gcc g++ python linux-headers paxctl libgcc libs
 
 RUN mkdir -p /etc/ssl/certs/ && update-ca-certificates --fresh
 
-COPY scripts/* /usr/local/bin/
-COPY wsw /var/wsw
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-CMD ["node", "/var/wsw/server.js"]
+# Install app dependencies
+COPY package.json /usr/src/app/
+RUN npm install
+
+# Bundle app source
+COPY . /usr/src/app
+
+# Make executables visible system wide
+RUN npm install -g .
+
+CMD ["npm", "start"]
