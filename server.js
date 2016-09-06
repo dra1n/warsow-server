@@ -16,39 +16,57 @@ const rpc = {
 }
 
 const server = net.createServer((socket) => {
-  socket.on('data', (data) => {
-    let cmd = data.toString()
-    let command
+  //socket.on('data', (data) => {
+    //let cmd = data.toString()
+    //let command
 
-    if (Object.keys(rpc).indexOf(cmd) > -1) {
-      command = spawn(rpc[cmd])
-      console.log('cmd: ', cmd)
+    //if (Object.keys(rpc).indexOf(cmd) > -1) {
+      //command = spawn(rpc[cmd])
+      //console.log('cmd: ', cmd)
 
-      command.stdout.on('data', function (chunk) {
-        socket.write(chunk.toString(), 'utf8')
-        console.log(chunk.toString())
-      })
+      //command.stdout.on('data', function (chunk) {
+        //socket.write(chunk.toString(), 'utf8')
+        //console.log(chunk.toString())
+      //})
 
-      command.stderr.on('data', function (chunk) {
-        socket.write(chunk.toString(), 'utf8')
-        console.error(chunk.toString())
-      })
+      //command.stderr.on('data', function (chunk) {
+        //socket.write(chunk.toString(), 'utf8')
+        //console.error(chunk.toString())
+      //})
 
-      command.on('exit', function (code) {
-        let message = 'child process exited with code ' + code.toString()
+      //command.on('exit', function (code) {
+        //let message = 'child process exited with code ' + code.toString()
 
-        if (code !== 0) {
-          socket.destroy(new Error(message))
-        } else {
-          socket.end()
-        }
-        console.log(message)
-      })
+        //if (code !== 0) {
+          //socket.destroy(new Error(message))
+        //} else {
+          //socket.end()
+        //}
+        //console.log(message)
+      //})
+    //}
+  //})
+
+  //socket.on('error', function (message) {
+    //console.error(message)
+  //})
+  const term = spawn('game')
+
+  term.on('data', (data) => {
+    try {
+      socket.send(data)
+    } catch (ex) {
+      // The WebSocket is not open, ignore
     }
   })
 
-  socket.on('error', function (message) {
-    console.error(message)
+  socket.on('message', (msg) => {
+    term.write(msg)
+  })
+
+  socket.on('close', () => {
+    process.kill(term.pid)
+    console.log('Closed terminal ' + term.pid)
   })
 })
 
