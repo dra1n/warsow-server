@@ -33,7 +33,9 @@ var client = new net.Socket()
 
 client.connect(1337, '0.0.0.0', function() {
   console.log('Connected')
-  client.write('game-start')
+  client.write(JSON.stringify({
+    cmd: 'start'
+  }))
 })
 
 client.on('data', function(data) {
