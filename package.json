@@ -15,5 +15,8 @@
     "game-stop": "./scripts/game-stop"
   },
   "author": "dra1n",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "pty.js": "^0.3.1"
+  }
 }
