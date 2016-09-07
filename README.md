@@ -50,9 +50,9 @@ client.on('close', function() {
 //
 //  Error removing host "Warsow": Host does not exist: "Warsow"
 //  Can't remove "Warsow"
-//  
+//
 //  Creating CA: /root/.docker/machine/certs/ca.pem
-//  
+//
 //  Creating client certificate: /root/.docker/machine/certs/cert.pem
 //  ...
 ```
@@ -63,7 +63,9 @@ reestablish the connection
 ```
 client.connect(1337, '0.0.0.0', function() {
   console.log('Connected')
-  client.write('game-stop')
+  client.write(JSON.stringify({
+    cmd: 'stop'
+  }))
 })
 
 //  Successfully removed Warsow
