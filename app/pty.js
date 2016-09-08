@@ -16,8 +16,8 @@ const createTerminal = (cmdOptions, socket) => {
 
   terminal = pty.spawn(cmd, [], {
     name: 'xterm-color',
-    cols: cols || 80,
-    rows: rows || 24,
+    cols: parseInt(cols || 80, 10),
+    rows: parseInt(rows || 24, 10),
     cwd: process.env.PWD,
     env: process.env
   })

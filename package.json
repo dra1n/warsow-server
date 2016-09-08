@@ -12,7 +12,8 @@
     "game-resume": "./scripts/game-resume",
     "game-start": "./scripts/game-start",
     "game-stats": "./scripts/game-stats",
-    "game-stop": "./scripts/game-stop"
+    "game-stop": "./scripts/game-stop",
+    "game-help": "./scripts/game-help"
   },
   "author": "dra1n",
   "license": "MIT",

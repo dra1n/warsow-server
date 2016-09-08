@@ -10,8 +10,14 @@ const rpc = {
   resume: 'game-resume',
   start: 'game-start',
   stats: 'game-stats',
-  stop: 'game-stop'
+  stop: 'game-stop',
+  help: 'game-help'
 }
+
+const motd = [
+  'This is kind of game server management console. \n',
+  'Type "help" to list all available commands \n'
+]
 
 const cmd = process.argv[2]
 
@@ -24,6 +30,8 @@ function cli() {
     input: process.stdin,
     output: process.stdout
   })
+
+  motd.forEach((m) => iface.write(m))
 
   iface.setPrompt('game> ')
 
@@ -40,12 +48,10 @@ function cli() {
       iface.pause()
 
       command = spawn(rpc[cmd])
-      command.stdout.pipe(process.stdout);
-      command.stderr.pipe(process.stderr);
+      command.stdout.pipe(process.stdout)
+      command.stderr.pipe(process.stderr)
 
-      command.on('exit', (code) => {
-        let message = 'child process exited with code ' + code.toString()
-        console.log(message)
+      command.on('exit', () => {
         iface.prompt()
       })
     } else {
@@ -60,8 +66,8 @@ function cli() {
 
 if (isAllowed(cmd)) {
   let command = spawn(rpc[cmd])
-  command.stdout.pipe(process.stdout);
-  command.stderr.pipe(process.stderr);
+  command.stdout.pipe(process.stdout)
+  command.stderr.pipe(process.stderr)
 } else {
   cli()
 }
