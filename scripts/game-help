@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo 'Type:   "stats" to see server statistics'
+echo '        "start" to start server'
+echo '        "stop" to stop server'
+echo '        "help" to see this help message'
