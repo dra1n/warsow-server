@@ -52,7 +52,11 @@ const ptyServer = net.createServer((socket) => {
   })
 
   socket.on('close', () => {
-    process.kill(terminal.pid)
+    try {
+      process.kill(terminal.pid)
+    } catch(e) {
+      console.log('Was already killed ' + terminal.pid)
+    }
 
     console.log('Closed terminal ' + terminal.pid)
 
