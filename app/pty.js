@@ -43,7 +43,7 @@ const ptyServer = net.createServer((socket) => {
     try {
       socket.write(data)
     } catch (e) {
-      // The WebSocket is not open, ignore
+      // client socket is not open, ignore
     }
   })
 
