@@ -61,6 +61,14 @@ RUN apk add --no-cache curl make gcc g++ python linux-headers paxctl libgcc libs
 
 RUN mkdir -p /etc/ssl/certs/ && update-ca-certificates --fresh
 
+RUN apk add --update \
+    python \
+    python-dev \
+    py-pip \
+    build-base \
+  && pip install virtualenv \
+  && rm -rf /var/cache/apk/*
+
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
