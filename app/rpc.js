@@ -1,8 +1,9 @@
-/* eslint no-process-env: 0 */
 /* eslint no-console: 0 */
+/* eslint consistent-return: 0 */
 
 const net = require('net')
 const spawn = require('child_process').spawn
+const createTerminal = require('./pty').createTerminal
 const commands = require('./commands')
 
 const toCmd = (buff) => {
@@ -20,34 +21,42 @@ const toCmd = (buff) => {
 
 const rpcServer = net.createServer((socket) => {
   socket.on('data', (data) => {
-    const { cmd, pty } = toCmd(data)
+    const cmdOptions = toCmd(data)
+    const { cmd, pty } = cmdOptions
     let command
 
-    if (Object.keys(commands).indexOf(cmd) > -1) {
-      command = spawn(commands[cmd])
-      console.log('cmd: ', cmd)
-
-      command.stdout.on('data', (chunk) => {
-        socket.write(chunk.toString(), 'utf8')
-        console.log(chunk.toString())
-      })
-
-      command.stderr.on('data', (chunk) => {
-        socket.write(chunk.toString(), 'utf8')
-        console.error(chunk.toString())
-      })
-
-      command.on('exit', (code) => {
-        let message = 'child process exited with code ' + code.toString()
-
-        if (code !== 0) {
-          socket.destroy(new Error(message))
-        } else {
-          socket.end()
-        }
-        console.log(message)
-      })
+    if (Object.keys(commands).indexOf(cmd) < 0) {
+      return
     }
+
+    if (pty) {
+      return createTerminal(cmdOptions, socket)
+    }
+
+    console.log('cmd: ', cmd)
+
+    command = spawn(commands[cmd])
+
+    command.stdout.on('data', (chunk) => {
+      socket.write(chunk.toString(), 'utf8')
+      console.log(chunk.toString())
+    })
+
+    command.stderr.on('data', (chunk) => {
+      socket.write(chunk.toString(), 'utf8')
+      console.error(chunk.toString())
+    })
+
+    command.on('exit', (code) => {
+      let message = 'child process exited with code ' + code.toString()
+
+      if (code !== 0) {
+        socket.destroy(new Error(message))
+      } else {
+        socket.end()
+      }
+      console.log(message)
+    })
   })
 
   socket.on('error', (message) => {

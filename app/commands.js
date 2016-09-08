@@ -3,5 +3,6 @@ module.exports = {
   resume: 'game-resume',
   start: 'game-start',
   stats: 'game-stats',
-  stop: 'game-stop'
+  stop: 'game-stop',
+  game: 'game'
 }
