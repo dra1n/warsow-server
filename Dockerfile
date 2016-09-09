@@ -30,7 +30,8 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN \
   apt-get install -y build-essential && \
   apt-get install -y nodejs && \
-  apt-get install -y python
+  apt-get install -y python && \
+  npm install -g node-gyp
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -47,3 +48,5 @@ COPY . /usr/src/app
 RUN npm install -g .
 
 CMD ["npm", "start"]
+
+//https://hub.docker.com/r/inslab/codebox/~/dockerfile/
