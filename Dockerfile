@@ -27,7 +27,10 @@ RUN \
 
 # Install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get install -y nodejs
+RUN \
+  apt-get install -y build-essential && \
+  apt-get install -y nodejs && \
+  apt-get install -y python
 
 # Create app directory
 RUN mkdir -p /usr/src/app
