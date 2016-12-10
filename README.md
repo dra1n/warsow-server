@@ -21,8 +21,9 @@ This will stop your docker machine and destroy droplet
 ### To run this inside container
 ```bash
 docker build -t boom/wsw-scripts .
-docker run -e TOKEN=<digitalocean token> -e PORT=1337 -e HOST='0.0.0.0' -p 1337:1337 -t boom/wsw-scripts
-# TCP Server is listening on 0.0.0.0:1337
+docker run -e TOKEN=<digitalocean token> -e RPC_PORT=1337 -e PTY_PORT=8007 -e HOST='0.0.0.0' -p 1337:1337 -p 8007:8007 -t --rm -i dra1n/wsw-scripts
+# RPC TCP Server is listening on 0.0.0.0:1337
+# PTY TCP Server is listening on 0.0.0.0:8007
 ```
 
 You can use tcp client to invoke wsw scripts. For example
