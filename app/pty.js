@@ -44,11 +44,17 @@ const ptyServer = net.createServer((socket) => {
       socket.write(data)
     } catch (e) {
       // client socket is not open, ignore
+      console.log(e.message)
     }
   })
 
   socket.on('data', (data) => {
-    terminal.write(data)
+    try {
+      terminal.write(data)
+    } catch(e) {
+      console.log(e.message)
+      console.log('Terminal does not exists')
+    }
   })
 
   socket.on('close', () => {
@@ -56,6 +62,7 @@ const ptyServer = net.createServer((socket) => {
       process.kill(terminal.pid)
       console.log('Closed terminal ' + terminal.pid)
     } catch(e) {
+      console.log(e.message)
       console.log('Was already killed ')
     }
 
